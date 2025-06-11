@@ -3,6 +3,8 @@ package net.skyenetwork.skyecrates.listeners;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.skyenetwork.skyecrates.SkyeCratesPlugin;
 import net.skyenetwork.skyecrates.crates.CrateManager;
+import net.skyenetwork.skyecrates.gui.CratePreviewGUI;
+import net.skyenetwork.skyecrates.gui.DeleteConfirmationGUI;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -23,10 +25,18 @@ public class CrateListener implements Listener {
     
     private final SkyeCratesPlugin plugin;
     private final MiniMessage miniMessage;
+    private final CratePreviewGUI previewGUI;
+    private final DeleteConfirmationGUI deleteGUI;
     
     public CrateListener(SkyeCratesPlugin plugin) {
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
+        this.previewGUI = new CratePreviewGUI(plugin);
+        this.deleteGUI = new DeleteConfirmationGUI(plugin);
+        
+        // Register GUI listeners
+        plugin.getServer().getPluginManager().registerEvents(previewGUI, plugin);
+        plugin.getServer().getPluginManager().registerEvents(deleteGUI, plugin);
     }
     
     @EventHandler
@@ -68,10 +78,27 @@ public class CrateListener implements Listener {
         }
         
         // Handle placed crate interaction (barriers)
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock != null) {
-            if (clickedBlock.getType() == Material.BARRIER) {
-                String crateName = plugin.getCrateManager().getCrateAt(clickedBlock.getLocation());
-                if (crateName != null) {
+        if (clickedBlock != null && clickedBlock.getType() == Material.BARRIER) {
+            String crateName = plugin.getCrateManager().getCrateAt(clickedBlock.getLocation());
+            if (crateName != null) {
+                
+                // LEFT CLICK - Preview loot table
+                if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                    // Admin shift+left click - Delete confirmation
+                    if (player.isSneaking() && player.hasPermission("skyecrates.admin")) {
+                        CrateManager.CrateConfig crate = plugin.getCrateManager().getCrate(crateName);
+                        if (crate != null) {
+                            deleteGUI.openDeleteConfirmation(player, clickedBlock.getLocation(), crate.getName());
+                        }
+                    } else {
+                        // Regular left click - Show preview
+                        previewGUI.openPreview(player, crateName);
+                    }
+                    event.setCancelled(true);
+                }
+                
+                // RIGHT CLICK - Open crate (existing behavior)
+                else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (player.hasPermission("skyecrates.use")) {
                         plugin.getCrateManager().openCrate(clickedBlock.getLocation(), player);
                     } else {

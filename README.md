@@ -6,9 +6,13 @@ A Minecraft plugin for Paper/Spigot servers that adds customizable crates with n
 
 - **Native Minecraft Loot Tables**: Full support for Minecraft's loot table format, compatible with [Misode's Loot Table Generator](https://misode.github.io/loot-table/)
 - **Particle Effects**: Customizable particle effects for each crate type with full control over particle behavior
+- **Digital Key System**: Players need keys to open crates, with `/skyecrates keys` command to check key counts
+- **Barrier-based Crates**: Crates are placed as barrier blocks that stay persistent after opening
+- **Loot Preview**: Left-click on crates to preview possible items and their drop chances
+- **Admin Deletion**: Admins can Shift+Left-click crates to open a secure deletion confirmation GUI
 - **Easy Configuration**: YAML configuration files for each crate type
 - **Permissions**: Built-in permission system for admins and users
-- **Commands**: Complete command system for managing crates
+- **Commands**: Complete command system for managing crates and keys
 - **Paper API**: Built specifically for Paper 1.21.4+ with modern Java features
 
 ## Requirements
@@ -92,9 +96,17 @@ loot: |
 
 - `/skyecrates reload` - Reload plugin configuration
 - `/skyecrates list` - List all available crates
-- `/skyecrates give <player> <crate> [amount]` - Give a crate item to a player
+- `/skyecrates give <player> <crate> [amount]` - Give a crate placer to a player
 - `/skyecrates place <crate>` - Place a crate at your target location
 - `/skyecrates remove` - Remove a crate you're looking at
+- `/skyecrates givekey <player> <crate> [amount]` - Give digital keys to a player
+- `/skyecrates keys` - Show your key counts
+
+## Crate Interactions
+
+- **Right-click**: Open crate (requires key)
+- **Left-click**: Preview possible loot and drop chances
+- **Shift+Left-click** (Admins only): Open deletion confirmation GUI
 
 ## Permissions
 
@@ -202,14 +214,3 @@ loot: |
 
 The compiled JAR will be in `build/libs/`
 
-## Migration from Kotlin Version
-
-This is a complete Java rewrite of the original Kotlin plugin. Configuration files are compatible, but the plugin is now:
-- Written in pure Java for better compatibility
-- Optimized for Paper 1.21.4+
-- Enhanced with better loot table parsing
-- Improved error handling and logging
-
-## License
-
-This project is licensed under the MIT License.
