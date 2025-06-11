@@ -1,14 +1,15 @@
 # SkyeCrates
 
-A Minecraft plugin for Spigot/Paper servers that adds customizable crates with loot tables and particle effects.
+A Minecraft plugin for Paper/Spigot servers that adds customizable crates with native Minecraft loot tables and particle effects.
 
 ## Features
 
-- **Minecraft Loot Tables**: Uses native Minecraft loot table format (compatible with Misode's loot table generator)
-- **Particle Effects**: Customizable particle effects for each crate type
+- **Native Minecraft Loot Tables**: Full support for Minecraft's loot table format, compatible with [Misode's Loot Table Generator](https://misode.github.io/loot-table/)
+- **Particle Effects**: Customizable particle effects for each crate type with full control over particle behavior
 - **Easy Configuration**: YAML configuration files for each crate type
 - **Permissions**: Built-in permission system for admins and users
-- **Commands**: Full command system for managing crates
+- **Commands**: Complete command system for managing crates
+- **Paper API**: Built specifically for Paper 1.21.4+ with modern Java features
 
 ## Requirements
 
@@ -27,10 +28,27 @@ A Minecraft plugin for Spigot/Paper servers that adds customizable crates with l
 
 Each crate is configured in its own YAML file in the `plugins/SkyeCrates/crates/` folder.
 
+### Crate Configuration Format
+
+```yaml
+name: <name of crate>
+
+particles:
+  type: <particle type>    # Bukkit Particle enum value
+  deltaX: <x spread>       # How far particles spread on X axis
+  deltaY: <y spread>       # How far particles spread on Y axis  
+  deltaZ: <z spread>       # How far particles spread on Z axis
+  count: <particle count>  # Number of particles per spawn
+  speed: <particle speed>  # Speed of particles
+
+loot: |
+  <loot table JSON pasted here>
+```
+
 ### Example Crate Configuration
 
 ```yaml
-# Name of the crate (displayed to players)
+# Example Crate Configuration
 name: "Example Crate"
 
 # Particle configuration
@@ -74,7 +92,7 @@ loot: |
 
 - `/skyecrates reload` - Reload plugin configuration
 - `/skyecrates list` - List all available crates
-- `/skyecrates give <player> <crate>` - Give a crate item to a player
+- `/skyecrates give <player> <crate> [amount]` - Give a crate item to a player
 - `/skyecrates place <crate>` - Place a crate at your target location
 - `/skyecrates remove` - Remove a crate you're looking at
 
@@ -86,9 +104,95 @@ loot: |
 ## Using Misode's Loot Table Generator
 
 1. Go to [Misode's Loot Table Generator](https://misode.github.io/loot-table/)
-2. Create your desired loot table
-3. Copy the generated JSON
-4. Paste it into the `loot:` section of your crate configuration
+2. Create your desired loot table using the visual interface
+3. Copy the generated JSON from the output
+4. Paste it directly into the `loot:` section of your crate configuration file
+
+### Supported Loot Table Features
+
+- **Multiple pools** with different roll counts
+- **Weighted entries** for item rarity
+- **Functions** like `set_count`, `set_damage`, `enchant_with_levels`
+- **Conditions** for advanced loot logic
+- **All vanilla items** and their properties
+
+## Example Configurations
+
+### Basic Crate
+Simple crate with a single guaranteed diamond:
+
+```yaml
+name: "Basic Crate"
+particles:
+  type: "FLAME"
+  deltaX: 0.5
+  deltaY: 0.5
+  deltaZ: 0.5
+  count: 10
+  speed: 0.1
+loot: |
+  {
+    "type": "minecraft:block",
+    "pools": [
+      {
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:diamond"
+          }
+        ]
+      }
+    ]
+  }
+```
+
+### Treasure Crate
+Advanced crate with multiple items and different rarities:
+
+```yaml
+name: "Treasure Crate"
+particles:
+  type: "VILLAGER_HAPPY"
+  deltaX: 1.0
+  deltaY: 0.8
+  deltaZ: 1.0
+  count: 25
+  speed: 0.05
+loot: |
+  {
+    "type": "minecraft:block",
+    "pools": [
+      {
+        "rolls": {
+          "min": 2,
+          "max": 4
+        },
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:diamond",
+            "weight": 5
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:emerald",
+            "weight": 8,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 2,
+                  "max": 5
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+```
 
 ## Building from Source
 
@@ -97,6 +201,14 @@ loot: |
 ```
 
 The compiled JAR will be in `build/libs/`
+
+## Migration from Kotlin Version
+
+This is a complete Java rewrite of the original Kotlin plugin. Configuration files are compatible, but the plugin is now:
+- Written in pure Java for better compatibility
+- Optimized for Paper 1.21.4+
+- Enhanced with better loot table parsing
+- Improved error handling and logging
 
 ## License
 

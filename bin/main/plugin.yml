@@ -1,0 +1,22 @@
+name: SkyeCrates
+version: ${version}
+main: net.skyenetwork.skyecrates.SkyeCratesPlugin
+api-version: 1.21
+authors: [SkyeNetwork]
+description: A Minecraft plugin for customizable crates with loot tables and particle effects
+website: https://github.com/SkyeNetwork/SkyeCrates
+
+commands:
+  skyecrates:
+    description: Main SkyeCrates command
+    aliases: [crates]
+    usage: /<command> [reload|list|give|place|remove]
+    permission: skyecrates.admin
+
+permissions:
+  skyecrates.admin:
+    description: Access to all SkyeCrates commands
+    default: op
+  skyecrates.use:
+    description: Allows using crates
+    default: true

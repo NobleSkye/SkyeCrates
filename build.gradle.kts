@@ -1,7 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
-    id("io.papermc.paperweight.userdev") version "1.5.11"
-    id("xyz.jpenilla.run-paper") version "2.2.2"
+    id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -9,35 +7,19 @@ group = "net.skyenetwork"
 version = "1.0.0"
 description = "A Minecraft plugin for customizable crates with loot tables and particle effects"
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
-}
-
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://oss.sonatype.org/content/groups/public/")
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("net.kyori:adventure-api:4.15.0")
-    implementation("net.kyori:adventure-text-minimessage:4.15.0")
-}
-
-kotlin {
-    jvmToolchain(21)
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    // Use compileOnly for Gson since it's provided by Paper
+    compileOnly("com.google.code.gson:gson:2.10.1")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "21"
-    }
-    
-    assemble {
-        dependsOn(reobfJar)
-    }
-    
     processResources {
         val props = mapOf("version" to version)
         inputs.properties(props)
@@ -47,11 +29,12 @@ tasks {
         }
     }
     
-    shadowJar {
-        minimize()
+    jar {
+        archiveBaseName.set("SkyeCrates")
     }
     
-    runServer {
-        minecraftVersion("1.21.4")
+    // Use regular jar instead of shadowJar for now
+    build {
+        dependsOn(jar)
     }
 }

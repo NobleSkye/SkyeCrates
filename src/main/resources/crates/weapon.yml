@@ -1,0 +1,121 @@
+# Weapon Crate - Example with enchanted items
+name: "Weapon Crate"
+
+# Epic particle effects for a weapon crate
+particles:
+  type: "END_ROD"
+  deltaX: 0.8
+  deltaY: 1.2
+  deltaZ: 0.8
+  count: 20
+  speed: 0.15
+
+# Advanced loot table with enchanted weapons
+# Generated using Misode's Loot Table Generator
+loot: |
+  {
+    "type": "minecraft:block",
+    "pools": [
+      {
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:diamond_sword",
+            "weight": 3,
+            "functions": [
+              {
+                "function": "minecraft:enchant_with_levels",
+                "levels": {
+                  "min": 20,
+                  "max": 30
+                },
+                "treasure": true
+              },
+              {
+                "function": "minecraft:set_name",
+                "name": {
+                  "text": "Legendary Blade",
+                  "color": "gold",
+                  "italic": false
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:bow",
+            "weight": 4,
+            "functions": [
+              {
+                "function": "minecraft:enchant_with_levels",
+                "levels": {
+                  "min": 15,
+                  "max": 25
+                },
+                "treasure": false
+              },
+              {
+                "function": "minecraft:set_name",
+                "name": {
+                  "text": "Hunter's Bow",
+                  "color": "green",
+                  "italic": false
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:crossbow",
+            "weight": 3,
+            "functions": [
+              {
+                "function": "minecraft:enchant_with_levels",
+                "levels": {
+                  "min": 10,
+                  "max": 20
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "rolls": {
+          "min": 1,
+          "max": 2
+        },
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:arrow",
+            "weight": 20,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 16,
+                  "max": 64
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:spectral_arrow",
+            "weight": 5,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 8,
+                  "max": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

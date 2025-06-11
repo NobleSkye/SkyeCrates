@@ -1,0 +1,84 @@
+# Treasure Crate Configuration
+name: "Treasure Crate"
+
+# Particle configuration
+particles:
+  type: "VILLAGER_HAPPY"  # Different particle type
+  deltaX: 1.0            # Wider particle spread
+  deltaY: 0.8
+  deltaZ: 1.0
+  count: 25              # More particles
+  speed: 0.05            # Slower particles
+
+# Loot table with multiple items and different weights
+# This gives various treasure items with different rarities
+loot: |
+  {
+    "type": "minecraft:block",
+    "pools": [
+      {
+        "rolls": {
+          "min": 2,
+          "max": 4
+        },
+        "entries": [
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:diamond",
+            "weight": 5,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 1,
+                  "max": 2
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:emerald",
+            "weight": 8,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 2,
+                  "max": 5
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:gold_ingot",
+            "weight": 12,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 3,
+                  "max": 8
+                }
+              }
+            ]
+          },
+          {
+            "type": "minecraft:item",
+            "name": "minecraft:iron_ingot",
+            "weight": 20,
+            "functions": [
+              {
+                "function": "minecraft:set_count",
+                "count": {
+                  "min": 5,
+                  "max": 12
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
