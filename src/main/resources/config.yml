@@ -1,0 +1,36 @@
+# SkyeCrates Configuration
+
+# Plugin settings
+plugin:
+  name: "SkyeCrates"
+  prefix: "<gray>[<gold>SkyeCrates<gray>]</gray>"
+
+# Particle spawn interval (in ticks, 20 ticks = 1 second)
+particle-interval: 20
+
+# Particle rendering mode
+# force: Force particles to be visible even if client has particles disabled
+# normal: Respect client particle settings
+particle-mode: "normal"
+
+# Default particle settings for crates
+default-particles:
+  type: "FLAME"
+  deltaX: 0.5
+  deltaY: 0.5
+  deltaZ: 0.5
+  count: 1
+  speed: 1
+
+# Messages
+messages:
+  no-permission: "<red>You don't have permission to use this command!"
+  player-not-found: "<red>Player not found!"
+  crate-not-found: "<red>Crate not found!"
+  config-reloaded: "<green>Configuration reloaded successfully!"
+  crate-given: "<green>Gave <yellow>{amount}</yellow> <green>{crate}</green> to <yellow>{player}</yellow>!"
+  crate-placed: "<green>Crate <yellow>{crate}</yellow> placed successfully!"
+  crate-removed: "<green>Crate removed successfully!"
+  no-target-block: "<red>You must be looking at a block to place a crate!"
+  no-crate-to-remove: "<red>You must be looking at a crate to remove it!"
+  crate-opened: "<green>You opened a <yellow>{crate}</yellow>!"
